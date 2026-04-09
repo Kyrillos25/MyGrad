@@ -17,8 +17,9 @@
 
         {% if result %}
         {# ================= Single result view ================= #}
-        {% set params = result.parameters | safe %}
-        {% set data   = result.results   | safe %}
+        {# parameters and results are JSON strings — tojson escapes quotes for safe JS embedding #}
+        {% set params_json = result.parameters | tojson %}
+        {% set data_json   = result.results   | tojson %}
 
         <!-- Header card -->
         <div class="card mb-4">
@@ -170,8 +171,8 @@
 
         <script>
         (function() {
-            var params  = {{ params }};
-            var rawData = {{ data }};
+            var params  = JSON.parse({{ params_json }});
+            var rawData = JSON.parse({{ data_json }});
 
             var itemsets = rawData.frequent_itemsets || [];
             var rules    = rawData.association_rules || [];
