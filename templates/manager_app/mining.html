@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Data Mining{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <h2><i class="fas fa-chart-line"></i> Run Data Mining</h2>
+        
+        <div class="card">
+            <div class="card-body">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="algorithm" class="form-label">Algorithm</label>
+                                <select class="form-select" id="algorithm" name="algorithm">
+                                    <option value="fpgrowth" selected>FP-Growth</option>
+                                    <option value="apriori">Apriori (SON)</option>
+                                </select>
+                                <div class="form-text">FP-Growth is generally faster and recommended for large datasets.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="min_support" class="form-label">Minimum Support</label>
+                                <select class="form-select" id="min_support" name="min_support">
+                                    {% for support in min_support_options %}
+                                        <option value="{{ support }}">{{ support }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="form-text">
+                                    <strong>Recommended values for your dataset:</strong><br>
+                                    • 0.001 (0.1%): ~18+ transactions - Many patterns<br>
+                                    • 0.002 (0.2%): ~37+ transactions - Good balance<br>
+                                    • 0.005 (0.5%): ~92+ transactions - Fewer but stronger<br>
+                                    • 0.01 (1%): ~185+ transactions - Very strong patterns
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="min_confidence" class="form-label">Minimum Confidence</label>
+                                <select class="form-select" id="min_confidence" name="min_confidence">
+                                    {% for confidence in min_confidence_options %}
+                                        <option value="{{ confidence }}">{{ confidence }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="form-text">
+                                    <strong>Recommended values:</strong><br>
+                                    • 0.1-0.3: Weak associations (more results)<br>
+                                    • 0.4-0.6: Moderate associations (balanced)<br>
+                                    • 0.7-0.8: Strong associations (fewer results)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>For your dataset:</strong> Start with min_support=0.01 and min_confidence=0.5.
+                        This will find patterns that occur in at least 1% of transactions with 50% confidence.
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-play"></i> Run Mining
+                    </button>
+                    <a href="{{ url_for('manager_app.dashboard') }}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

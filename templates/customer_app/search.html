@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2><i class="fas fa-search"></i> Search Results</h2>
+        
+        {% if query %}
+        <p class="lead">Showing results for: <strong>"{{ query }}"</strong></p>
+        {% endif %}
+        
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+            {% for item in products_with_prices %}
+            <div class="col">
+                <div class="card h-100 product-card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.product.name }}</h5>
+                        <p class="card-text">{{ item.product.description[:100] }}...</p>
+                        
+                        <h4 class="text-primary">${{ "%.2f"|format(item.price) }}</h4>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <div class="d-grid gap-2">
+                            <a href="{{ url_for('customer_app.product_detail', product_id=item.product.id) }}" 
+                               class="btn btn-outline-primary">
+                                <i class="fas fa-eye"></i> View Details
+                            </a>
+                            <form action="{{ url_for('customer_app.add_to_cart', product_id=item.product.id) }}" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-cart-plus"></i> Add to Cart
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> No products found matching your search.
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

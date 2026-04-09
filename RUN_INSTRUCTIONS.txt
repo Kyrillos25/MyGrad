@@ -1,0 +1,57 @@
+========================================
+HOW TO RUN THE MARKET BASKET MINING APP
+========================================
+
+1. Open Command Prompt (cmd)
+
+2. Navigate to the project directory:
+   cd C:\Users\user\OneDrive\Desktop\market-basket-mining
+
+3. Run the application:
+   python run.py
+
+4. Open your web browser and go to:
+   http://127.0.0.1:5000
+
+========================================
+TWO SEPARATE WEB APPS
+========================================
+
+1. CUSTOMER APP (Public)
+   - URL: http://127.0.0.1:5000/
+   - Browse products by category
+   - Add items to shopping cart
+   - Place orders
+   - View product recommendations
+
+2. MANAGER APP (Admin Only)
+   - URL: http://127.0.0.1:5000/admin/
+   - Login required
+   - Upload transaction data (CSV)
+   - Run Apriori or FP-Growth mining
+   - View mining results and recommendations
+   - Manage product catalog
+
+========================================
+DEFAULT LOGIN CREDENTIALS
+========================================
+Username: admin
+Password: admin123
+
+========================================
+TO STOP THE APPLICATION
+========================================
+Press CTRL+C in the Command Prompt window
+
+========================================
+SAMPLE DATA
+========================================
+The app comes with 10 sample products:
+- Bread, Jam, Pasta, Pasta Sauce
+- Milk, Butter, Eggs, Cheese
+- Coffee, Olive Oil
+
+To reset database and re-add sample data:
+   python init_db.py
+
+========================================

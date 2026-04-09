@@ -1,0 +1,1 @@
+# Manager Application Blueprint

@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}Manager Dashboard - Market Basket Demo{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1><i class="fas fa-user-tie"></i> Manager Dashboard</h1>
+        <p class="lead">Manage data mining operations and product catalog</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-box"></i> Products</h5>
+                <h2>{{ product_count }}</h2>
+                <p class="card-text">Total products in catalog</p>
+                <a href="{{ url_for('manager_app.products') }}" class="btn btn-light btn-sm">Manage Products</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-lightbulb"></i> Recommendations</h5>
+                <h2>{{ recommendation_count }}</h2>
+                <p class="card-text">Active recommendations</p>
+                <a href="{{ url_for('manager_app.recommendations') }}" class="btn btn-light btn-sm">View Recommendations</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-chart-line"></i> Mining Results</h5>
+                <h2>{{ recent_results|length }}</h2>
+                <p class="card-text">Recent mining runs</p>
+                <a href="{{ url_for('manager_app.mining') }}" class="btn btn-light btn-sm">Run Mining</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-rocket"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('manager_app.upload') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-upload"></i> Upload Transaction Data
+                    </a>
+                    <a href="{{ url_for('manager_app.mining') }}" class="btn btn-outline-success">
+                        <i class="fas fa-microchip"></i> Run Data Mining
+                    </a>
+                    <a href="{{ url_for('manager_app.results') }}" class="btn btn-outline-info">
+                        <i class="fas fa-table"></i> View Mining Results
+                    </a>
+                    <a href="{{ url_for('manager_app.products') }}" class="btn btn-outline-warning">
+                        <i class="fas fa-box-open"></i> Manage Products
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-history"></i> Recent Mining Results</h5>
+            </div>
+            <div class="card-body">
+                {% if recent_results %}
+                <div class="list-group">
+                    {% for result in recent_results %}
+                    <a href="{{ url_for('manager_app.results', result_id=result.id) }}" 
+                       class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">{{ result.algorithm|upper }}</h6>
+                            <small>{{ result.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                        </div>
+                        <p class="mb-1 text-muted">By {{ result.created_by }}</p>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted">No mining results yet. <a href="{{ url_for('manager_app.mining') }}">Run your first mining job!</a></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-info-circle"></i> How It Works</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <i class="fas fa-upload fa-3x text-primary mb-3"></i>
+                            <h6>1. Upload Data</h6>
+                            <p class="small">Upload transaction CSV files</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <i class="fas fa-cogs fa-3x text-primary mb-3"></i>
+                            <h6>2. Run Mining</h6>
+                            <p class="small">Execute Apriori or FP-Growth</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <i class="fas fa-chart-bar fa-3x text-primary mb-3"></i>
+                            <h6>3. View Results</h6>
+                            <p class="small">Analyze frequent itemsets</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <i class="fas fa-store fa-3x text-primary mb-3"></i>
+                            <h6>4. Recommendations</h6>
+                            <p class="small">Power customer recommendations</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

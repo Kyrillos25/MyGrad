@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Mining Results{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2><i class="fas fa-chart-bar"></i> Mining Results</h2>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        {% if result %}
+        <!-- Single result view -->
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Results for {{ result.algorithm|upper }}</h5>
+                <p><strong>Created:</strong> {{ result.created_at }}</p>
+                <p><strong>Parameters:</strong> {{ result.parameters }}</p>
+                
+                <div class="mb-3">
+                    <a href="{{ url_for('manager_app.export_results', result_id=result.id, format='json') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-download"></i> Export JSON
+                    </a>
+                    <a href="{{ url_for('manager_app.export_results', result_id=result.id, format='csv') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-download"></i> Export CSV
+                    </a>
+                </div>
+                
+                <h6>Frequent Itemsets:</h6>
+                <div id="results-container">Loading...</div>
+            </div>
+        </div>
+        {% else %}
+        <!-- List of all results -->
+        <div class="card">
+            <div class="card-body">
+                {% if results %}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Algorithm</th>
+                            <th>Created At</th>
+                            <th>Created By</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for result in results %}
+                        <tr>
+                            <td>{{ result.algorithm|upper }}</td>
+                            <td>{{ result.created_at }}</td>
+                            <td>{{ result.created_by }}</td>
+                            <td>
+                                <a href="{{ url_for('manager_app.results', result_id=result.id) }}" class="btn btn-sm btn-primary">View</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> No mining results yet. Run a mining algorithm first!
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

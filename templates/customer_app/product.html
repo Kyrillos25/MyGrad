@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} - Market Basket Demo{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h1>{{ product.name }}</h1>
+                <p class="lead">{{ product.description }}</p>
+                
+                <h2 class="text-primary my-4">${{ "%.2f"|format(product_price) }}</h2>
+                
+                <form action="{{ url_for('customer_app.add_to_cart', product_id=product.id) }}" method="POST">
+                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                        <i class="fas fa-cart-plus"></i> Add to Cart
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        {% if recommended_products %}
+        <div class="card mb-4">
+            <div class="card-body">
+                <h3><i class="fas fa-handshake"></i> Frequently Bought Together</h3>
+                <div class="list-group">
+                    {% for rec_item in recommended_products %}
+                    <a href="{{ url_for('customer_app.product_detail', product_id=rec_item.product.id) }}" 
+                       class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ rec_item.product.name }}</h5>
+                            <small>${{ "%.2f"|format(rec_item.price) }}</small>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if similar_products %}
+        <div class="card">
+            <div class="card-body">
+                <h3><i class="fas fa-th"></i> Similar Products</h3>
+                <div class="row row-cols-2 g-2">
+                    {% for sim_item in similar_products %}
+                    <div class="col">
+                        <div class="card h-100">
+                            <div class="card-body p-2">
+                                <h6 class="card-title">{{ sim_item.product.name }}</h6>
+                                <p class="card-text text-muted small">${{ "%.2f"|format(sim_item.price) }}</p>
+                                <a href="{{ url_for('customer_app.product_detail', product_id=sim_item.product.id) }}" 
+                                   class="btn btn-sm btn-outline-primary">View</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <a href="{{ url_for('customer_app.index') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Products
+        </a>
+    </div>
+</div>
+{% endblock %}

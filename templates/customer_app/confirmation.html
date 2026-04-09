@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Order Confirmed{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card shadow">
+            <div class="card-body text-center">
+                <div class="mb-4">
+                    <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+                </div>
+                <h2>Thank You for Your Order!</h2>
+                <p class="lead">Your order has been placed successfully.</p>
+                
+                <div class="alert alert-success">
+                    <strong>Order Number:</strong> {{ order.order_number }}
+                </div>
+                
+                <div class="text-start">
+                    <h5>Order Details:</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Customer:</span>
+                            <strong>{{ order.customer_name }}</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Email:</span>
+                            <strong>{{ order.customer_email }}</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Total Amount:</span>
+                            <strong>${{ "%.2f"|format(order.total_amount) }}</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Status:</span>
+                            <span class="badge bg-success">{{ order.status }}</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="mt-4">
+                    <a href="{{ url_for('customer_app.index') }}" class="btn btn-primary">
+                        <i class="fas fa-store"></i> Continue Shopping
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

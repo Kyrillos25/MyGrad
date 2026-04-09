@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <h2><i class="fas fa-credit-card"></i> Checkout</h2>
+        
+        <div class="card">
+            <div class="card-body">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                <form method="POST">
+                    <h5 class="mb-3">Contact Information</h5>
+                    <div class="mb-3">
+                        <label for="customer_name" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="customer_name" name="customer_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="customer_email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="customer_email" name="customer_email" required>
+                    </div>
+                    
+                    <hr>
+                    
+                    <h5 class="mb-3">Order Summary</h5>
+                    <div class="mb-3">
+                        <p><strong>Cart Total:</strong> ${{ "%.2f"|format(cart_total()) }}</p>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                        <i class="fas fa-check-circle"></i> Place Order
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
