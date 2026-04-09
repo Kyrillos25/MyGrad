@@ -384,7 +384,11 @@ def results():
 
     if result_id:
         result = MiningResult.query.get_or_404(result_id)
-        return render_template('manager_app/results.html', result=result)
+        # Pre-parse JSON so the template gets dicts (not strings)
+        parsed_params = json.loads(result.parameters) if result.parameters else {}
+        parsed_data = json.loads(result.results) if result.results else {}
+        return render_template('manager_app/results.html', result=result,
+                               parsed_params=parsed_params, parsed_data=parsed_data)
 
     all_results = MiningResult.query.order_by(MiningResult.created_at.desc()).all()
     return render_template('manager_app/results.html', results=all_results)
